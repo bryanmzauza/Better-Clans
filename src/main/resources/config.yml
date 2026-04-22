@@ -1,0 +1,115 @@
+# =====================================================
+#  BetterClans v0.1.0 - configuracao principal
+#  NAO altere "clan.tag.length" (fixo em 3)
+# =====================================================
+
+config-version: 1
+language: "pt_BR"
+
+database:
+  # Tipo: "sqlite" (default, arquivo local) ou "mysql" (producao).
+  type: "sqlite"
+
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "betterclans"
+    username: "betterclans"
+    password: "changeme"
+    pool-size: 10
+    ssl: false
+
+  sqlite:
+    file: "betterclans.db"
+
+clan:
+  tag:
+    length: 3
+    allowed-regex: "^[A-Z0-9]{3}$"
+    reserved: ["ADM", "MOD", "OWN", "GOD", "STF"]
+  name:
+    max-length: 32
+  creation-cost: 10000
+  max-members: 30
+  friendly-fire: false
+  ally-damage: false
+
+chat:
+  # "standalone" = o plugin formata o chat;
+  # "placeholder-only" = deixa outro plugin de chat (nChat/Carbon) formatar.
+  mode: "standalone"
+  format: "<gray>[</gray><clan_color><clan_tag></clan_color><gray>]</gray> <player_name><gray>:</gray> <message>"
+  clan-chat-prefix: "<dark_green>[Cla]</dark_green>"
+  ally-chat-prefix: "<aqua>[Alianca]</aqua>"
+
+nametag:
+  enabled: true
+  # scoreboard (default) ou protocollib (exige ProtocolLib).
+  provider: "scoreboard"
+  format: "<clan_color>[<clan_tag>]</clan_color>"
+
+tablist:
+  enabled: true
+  format: "<clan_color>[<clan_tag>]</clan_color> <player_name>"
+
+duel:
+  # arena (teleporta para spawns dedicados) ou inline (luta no local).
+  mode: "arena"
+  cooldown-seconds: 180
+  allow-betting: true
+  min-bet: 100
+  max-bet: 1000000
+  countdown-seconds: 5
+  arena:
+    spawn-a: null
+    spawn-b: null
+
+xp:
+  per-kill-rival: 10
+  per-kill-neutral: 5
+  per-duel-win: 3
+  per-gladiator-win: 500
+  curve-exponent: 1.5
+
+gladiator:
+  enabled: true
+  schedule:
+    day-of-week: "SATURDAY"
+    hour: 20
+    minute: 0
+    timezone: "America/Sao_Paulo"
+  signup-opens:
+    day-of-week: "MONDAY"
+    hour: 0
+    minute: 0
+  min-clans: 2
+  max-clans: 16
+  min-members-per-clan: 2
+  match-timeout-minutes: 20
+  pre-match-immunity-seconds: 10
+
+  # Preenchidos pelos comandos /gladiator setlobby e /gladiator setspawn <n>.
+  lobby: null
+  return-spawn: null
+  spawns: []
+
+  kit:
+    enabled: true
+    items:
+      - "DIAMOND_SWORD"
+      - "DIAMOND_CHESTPLATE"
+      - "DIAMOND_LEGGINGS"
+      - "DIAMOND_BOOTS"
+      - "GOLDEN_APPLE:8"
+      - "COOKED_BEEF:32"
+
+  rewards:
+    first:
+      xp: 500
+      money: 50000
+    second:
+      xp: 250
+      money: 20000
+    third:
+      xp: 100
+      money: 10000

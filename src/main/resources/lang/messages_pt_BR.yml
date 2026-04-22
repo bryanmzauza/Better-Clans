@@ -1,0 +1,68 @@
+# Mensagens do BetterClans (pt_BR) - MiniMessage
+prefix: "<gray>[</gray><gold>BetterClans</gold><gray>]</gray> "
+
+general:
+  player-only: "<red>Esse comando so pode ser usado por jogadores."
+  reloaded: "<green>Configuracoes recarregadas."
+  not-implemented: "<yellow>Esse recurso ainda nao foi implementado."
+
+errors:
+  no-permission: "<red>Voce nao tem permissao para isso."
+  player-not-found: "<red>Jogador <white><player></white> nao encontrado."
+  clan-not-found: "<red>Cla com tag <white><tag></white> nao encontrado."
+  already-in-clan: "<red>Voce ja esta em um cla."
+  not-in-clan: "<red>Voce nao esta em um cla."
+  not-leader: "<red>Apenas o lider pode fazer isso."
+  not-officer: "<red>Apenas lider ou oficial pode fazer isso."
+
+clan:
+  tag:
+    invalid: "<red>A tag do cla deve ter exatamente 3 caracteres (A-Z ou 0-9)."
+    reserved: "<red>Essa tag e reservada."
+    taken: "<red>Essa tag ja esta em uso."
+  name:
+    taken: "<red>Esse nome ja esta em uso."
+    too-long: "<red>O nome do cla nao pode ter mais de <max> caracteres."
+  create:
+    success: "<green>Cla <white><tag></white> criado com sucesso!"
+    not-enough-money: "<red>Voce precisa de <white>$<cost></white> para criar um cla."
+  disband:
+    confirm: "<yellow>Digite <white>/clan disband confirm</white> em 30s para dissolver o cla."
+    success: "<green>Cla dissolvido."
+  invite:
+    sent: "<green>Convite enviado para <white><player></white>."
+    received: "<gold><player></gold> te convidou para o cla <white><tag></white>. Use <green>/clan accept <tag></green> ou <red>/clan deny <tag></red>."
+    accepted: "<green>Voce entrou no cla <white><tag></white>!"
+    denied: "<gray>Convite recusado."
+    expired: "<gray>Esse convite expirou."
+  kick:
+    success: "<green><player> foi expulso do cla."
+  promote:
+    success: "<green><player> foi promovido a oficial."
+  demote:
+    success: "<yellow><player> foi rebaixado a membro."
+  leave:
+    success: "<gray>Voce saiu do cla."
+    leader-must-transfer: "<red>Transfira a lideranca antes de sair (/clan transfer <player>)."
+
+duel:
+  challenge:
+    sent: "<green>Desafio enviado para <white><player></white>."
+    received: "<gold><player></gold> te desafiou para um /x1<bet_suffix>. <green>/x1 accept</green> ou <red>/x1 deny</red> (30s)."
+    accepted: "<green>Desafio aceito!"
+    denied: "<gray>Desafio recusado."
+    expired: "<gray>Desafio expirado."
+  cooldown: "<red>Aguarde <time>s antes de desafiar esse jogador novamente."
+  arena-not-set: "<red>Arena de /x1 nao configurada. Avise um admin."
+
+gladiator:
+  signup:
+    opened: "<green>Inscricoes do Gladiador abertas! <gray>/gladiator join</gray>"
+    closed: "<red>Inscricoes fechadas."
+    joined: "<green>Cla <white><tag></white> inscrito no Gladiador."
+    left: "<gray>Cla removido do Gladiador."
+  announce:
+    pre: "<gold>Gladiador comeca em <time>!"
+    start: "<gold>O Gladiador comecou! Que vencam os melhores."
+    winner: "<gold>Vitoria do cla <white><tag></white> no Gladiador!"
+  no-spawns: "<red>Nenhum spawn configurado. Use /gladiator setspawn <n>."

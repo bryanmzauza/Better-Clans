@@ -1,0 +1,60 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Paper run-paper
+run/
+run-*/
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Local DB / runtime
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Jars de saida locais
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Temp
+*.tmp
+*.bak
+
+# Others
+docs/

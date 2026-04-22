@@ -1,0 +1,93 @@
+name: BetterClans
+version: '${version}'
+main: com.bryanmz.betterclans.BetterClansPlugin
+api-version: '1.21'
+author: BryanMZ
+description: Plugin de clas PvP competitivo com duelos /x1 e evento semanal Gladiador.
+website: https://github.com/BryanMZ/BetterClans
+folia-supported: false
+
+depend:
+  - Vault
+softdepend:
+  - PlaceholderAPI
+  - ProtocolLib
+  - LuckPerms
+  - nChat
+  - Carbon
+  - VentureChat
+
+commands:
+  clan:
+    description: Comando raiz do BetterClans.
+    usage: /clan help
+    aliases: [bc, clã]
+    permission: betterclans.use
+  clanchat:
+    description: Envia mensagem no chat do cla.
+    usage: /cc <mensagem>
+    aliases: [cc]
+    permission: betterclans.chat
+  allychat:
+    description: Envia mensagem no chat de alianca.
+    usage: /ac <mensagem>
+    aliases: [ac]
+    permission: betterclans.chat.ally
+  x1:
+    description: Desafia um jogador para duelo 1v1.
+    usage: /x1 <player> [aposta]
+    permission: betterclans.duel
+  gladiator:
+    description: Comandos do evento Gladiador semanal.
+    usage: /gladiator help
+    permission: betterclans.gladiator
+
+permissions:
+  betterclans.*:
+    description: Acesso total ao BetterClans.
+    default: op
+    children:
+      betterclans.use: true
+      betterclans.create: true
+      betterclans.chat: true
+      betterclans.chat.ally: true
+      betterclans.duel: true
+      betterclans.gladiator: true
+      betterclans.admin: true
+  betterclans.use:
+    description: Permite usar /clan.
+    default: true
+  betterclans.create:
+    description: Permite criar clas.
+    default: true
+  betterclans.chat:
+    description: Permite usar chat de cla.
+    default: true
+  betterclans.chat.ally:
+    description: Permite usar chat de alianca.
+    default: true
+  betterclans.duel:
+    description: Permite usar /x1.
+    default: true
+  betterclans.gladiator:
+    description: Permite participar do evento Gladiador.
+    default: true
+  betterclans.admin:
+    description: Acesso a subcomandos administrativos (/clan admin ...).
+    default: op
+    children:
+      betterclans.admin.reload: true
+      betterclans.admin.delete: true
+      betterclans.admin.setlevel: true
+      betterclans.admin.setmax: true
+      betterclans.admin.migrate: true
+  betterclans.admin.reload:
+    default: op
+  betterclans.admin.delete:
+    default: op
+  betterclans.admin.setlevel:
+    default: op
+  betterclans.admin.setmax:
+    default: op
+  betterclans.admin.migrate:
+    default: op
