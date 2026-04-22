@@ -38,4 +38,9 @@ public final class TopSub extends AbstractSub {
                     "value", fmt.apply(c)));
         }
     }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
+        return args.length == 1 ? completeLiteral(args[0], "xp", "kills", "wins", "kd") : java.util.Collections.emptyList();
+    }
 }

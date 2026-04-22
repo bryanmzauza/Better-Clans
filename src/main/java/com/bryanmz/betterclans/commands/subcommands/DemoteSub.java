@@ -38,4 +38,11 @@ public final class DemoteSub extends AbstractSub {
         plugin.clans().saveMember(tm).thenRun(() ->
                 p.sendMessage(plugin.messages().get("clan.demote.success", "player", args[0])));
     }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
+        if (args.length != 1 || !(sender instanceof Player p)) return java.util.Collections.emptyList();
+        var me = plugin.clans().getMember(p.getUniqueId()).orElse(null);
+        return me == null ? java.util.Collections.emptyList() : completeClanMembers(me.clanId(), args[0]);
+    }
 }

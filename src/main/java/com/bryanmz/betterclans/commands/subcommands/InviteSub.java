@@ -43,4 +43,9 @@ public final class InviteSub extends AbstractSub {
         p.sendMessage(plugin.messages().get("clan.invite.sent", "player", target.getName()));
         target.sendMessage(plugin.messages().get("clan.invite.received", "player", p.getName(), "tag", clan.tag()));
     }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
+        return args.length == 1 ? completePlayers(args[0]) : java.util.Collections.emptyList();
+    }
 }

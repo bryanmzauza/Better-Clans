@@ -62,4 +62,14 @@ public final class AdminSub extends AbstractSub {
             default -> sender.sendMessage(Component.text("Subcomando admin desconhecido: " + args[0]));
         }
     }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
+        if (args.length == 1) return completeLiteral(args[0], "reload", "delete", "setlevel", "setmax");
+        if (args.length == 2) {
+            String sub = args[0].toLowerCase(Locale.ROOT);
+            if (sub.equals("delete") || sub.equals("setlevel")) return completeTags(args[1]);
+        }
+        return java.util.Collections.emptyList();
+    }
 }

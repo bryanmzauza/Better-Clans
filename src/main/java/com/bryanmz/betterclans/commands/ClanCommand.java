@@ -57,8 +57,8 @@ public final class ClanCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args) {
-        if (args.length == 0) {
-            sender.sendMessage(plugin.messages().get("general.not-implemented"));
+        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
+            sendHelp(sender);
             return true;
         }
         String head = args[0].toLowerCase(Locale.ROOT);
@@ -74,6 +74,16 @@ public final class ClanCommand implements CommandExecutor, TabCompleter {
         String[] tail = Arrays.copyOfRange(args, 1, args.length);
         sub.execute(sender, tail);
         return true;
+    }
+
+    private void sendHelp(CommandSender sender) {
+        sender.sendMessage(plugin.messages().get("clan.help.header"));
+        java.util.Set<String> seen = new java.util.HashSet<>();
+        for (SubCommand sub : subs.values()) {
+            if (!seen.add(sub.name())) continue;
+            if (!sub.permission().isEmpty() && !sender.hasPermission(sub.permission())) continue;
+            sender.sendMessage(plugin.messages().raw("clan.help.line", "name", sub.name()));
+        }
     }
 
     @Override

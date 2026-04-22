@@ -49,4 +49,9 @@ public final class InfoSub extends AbstractSub {
             sender.sendMessage(plugin.messages().raw("clan.info.motd", "motd", clan.motd()));
         }
     }
+
+    @Override
+    public java.util.List<String> tabComplete(org.bukkit.command.CommandSender sender, String[] args) {
+        return args.length == 1 ? completeTags(args[0]) : java.util.Collections.emptyList();
+    }
 }

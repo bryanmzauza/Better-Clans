@@ -27,6 +27,9 @@ clan:
     invalid: "<red>A tag do cla deve ter exatamente 3 caracteres (A-Z ou 0-9)."
     reserved: "<red>Essa tag e reservada."
     taken: "<red>Essa tag ja esta em uso."
+  help:
+    header: "<gold>=== Comandos BetterClans ==="
+    line: "<yellow>/clan <name>"
   name:
     taken: "<red>Esse nome ja esta em uso."
     too-long: "<red>O nome do cla nao pode ter mais de <max> caracteres."
@@ -127,6 +130,7 @@ gladiator:
     not-enough: "<red>Seu cla precisa de pelo menos <min> membros."
   announce:
     pre: "<gold>Gladiador comeca em <time>!"
+    warning: "<gold>Gladiador comeca em <minutes> minuto(s)!"
     start: "<gold>O Gladiador comecou! Que vencam os melhores."
     winner: "<gold>Vitoria do cla <white><tag></white> no Gladiador!"
     no-clans: "<red>Nenhum cla inscrito. Evento cancelado."

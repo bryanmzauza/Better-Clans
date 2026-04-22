@@ -46,4 +46,13 @@ public final class KickSub extends AbstractSub {
             }
         });
     }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
+        if (args.length != 1) return java.util.Collections.emptyList();
+        if (!(sender instanceof Player p)) return completePlayers(args[0]);
+        var me = plugin.clans().getMember(p.getUniqueId()).orElse(null);
+        if (me == null) return java.util.Collections.emptyList();
+        return completeClanMembers(me.clanId(), args[0]);
+    }
 }

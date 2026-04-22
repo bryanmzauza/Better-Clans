@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public final class GladiatorCommand implements CommandExecutor {
+public final class GladiatorCommand implements CommandExecutor, TabCompleter {
 
     private final BetterClansPlugin plugin;
 
@@ -148,5 +149,21 @@ public final class GladiatorCommand implements CommandExecutor {
         map.put("yaw", (double) loc.getYaw());
         map.put("pitch", (double) loc.getPitch());
         return map;
+    }
+
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+                                      @NotNull String alias, @NotNull String[] args) {
+        if (args.length == 1) {
+            String prefix = args[0].toLowerCase(Locale.ROOT);
+            List<String> base = new ArrayList<>(List.of("join", "leave", "info", "history"));
+            if (sender.hasPermission("betterclans.admin.gladiator")) {
+                base.addAll(List.of("start", "setspawn", "setlobby", "setreturn"));
+            }
+            List<String> out = new ArrayList<>();
+            for (String s : base) if (s.startsWith(prefix)) out.add(s);
+            return out;
+        }
+        return List.of();
     }
 }

@@ -6,12 +6,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
-public final class DuelCommand implements CommandExecutor {
+public final class DuelCommand implements CommandExecutor, TabCompleter {
 
     private final BetterClansPlugin plugin;
 
@@ -52,5 +55,23 @@ public final class DuelCommand implements CommandExecutor {
         plugin.database().dao().duelStats(p.getUniqueId()).thenAccept(stats -> {
             p.sendMessage(Component.text("Duelos vencidos: " + stats[0] + " | perdidos: " + stats[1]));
         });
+    }
+
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+                                      @NotNull String alias, @NotNull String[] args) {
+        if (args.length == 1) {
+            String prefix = args[0].toLowerCase(Locale.ROOT);
+            List<String> out = new ArrayList<>();
+            for (String fixed : new String[] { "accept", "deny", "stats" }) {
+                if (fixed.startsWith(prefix)) out.add(fixed);
+            }
+            for (var online : Bukkit.getOnlinePlayers()) {
+                if (sender instanceof Player self && self.getUniqueId().equals(online.getUniqueId())) continue;
+                if (online.getName().toLowerCase(Locale.ROOT).startsWith(prefix)) out.add(online.getName());
+            }
+            return out;
+        }
+        return List.of();
     }
 }

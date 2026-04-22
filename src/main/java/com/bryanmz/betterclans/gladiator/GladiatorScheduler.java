@@ -1,6 +1,7 @@
 package com.bryanmz.betterclans.gladiator;
 
 import com.bryanmz.betterclans.BetterClansPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -10,12 +11,15 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class GladiatorScheduler {
 
     private final BetterClansPlugin plugin;
     private BukkitTask signupTask;
     private BukkitTask matchTask;
+    private final List<BukkitTask> warningTasks = new ArrayList<>();
 
     public GladiatorScheduler(BetterClansPlugin plugin) {
         this.plugin = plugin;
@@ -29,6 +33,8 @@ public final class GladiatorScheduler {
     public void shutdown() {
         if (signupTask != null) signupTask.cancel();
         if (matchTask != null) matchTask.cancel();
+        for (BukkitTask t : warningTasks) t.cancel();
+        warningTasks.clear();
     }
 
     private void scheduleSignup() {
@@ -45,11 +51,25 @@ public final class GladiatorScheduler {
         ConfigurationSection cfg = plugin.getConfig().getConfigurationSection("gladiator.schedule");
         if (cfg == null) return;
         long ticks = computeDelayTicks(cfg);
+        scheduleWarnings(ticks);
         this.matchTask = plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             plugin.gladiator().closeSignups();
             plugin.gladiator().startMatch();
             scheduleMatch();
         }, ticks);
+    }
+
+    private void scheduleWarnings(long matchTicks) {
+        for (BukkitTask t : warningTasks) t.cancel();
+        warningTasks.clear();
+        int[] minutes = { 30, 10, 5, 1 };
+        for (int m : minutes) {
+            long delay = matchTicks - (m * 60L * 20L);
+            if (delay <= 0) continue;
+            BukkitTask task = plugin.getServer().getScheduler().runTaskLater(plugin, () ->
+                    Bukkit.broadcast(plugin.messages().get("gladiator.announce.warning", "minutes", String.valueOf(m))), delay);
+            warningTasks.add(task);
+        }
     }
 
     private long computeDelayTicks(ConfigurationSection schedule) {

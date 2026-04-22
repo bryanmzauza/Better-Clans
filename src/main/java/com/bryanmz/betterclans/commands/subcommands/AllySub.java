@@ -52,4 +52,9 @@ public final class AllySub extends AbstractSub {
         Player otherLeader = plugin.getServer().getPlayer(other.leaderUuid());
         if (otherLeader != null) otherLeader.sendMessage(plugin.messages().get("clan.ally.received", "tag", mine.tag()));
     }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
+        return args.length == 1 ? completeTags(args[0]) : java.util.Collections.emptyList();
+    }
 }

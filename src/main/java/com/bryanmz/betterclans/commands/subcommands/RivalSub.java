@@ -37,4 +37,9 @@ public final class RivalSub extends AbstractSub {
                     sender.sendMessage(plugin.messages().get("clan.rival.set", "tag", other.tag())));
         }
     }
+
+    @Override
+    public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
+        return args.length == 1 ? completeTags(args[0]) : java.util.Collections.emptyList();
+    }
 }
