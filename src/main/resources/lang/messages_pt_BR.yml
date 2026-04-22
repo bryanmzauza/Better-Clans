@@ -5,15 +5,22 @@ general:
   player-only: "<red>Esse comando so pode ser usado por jogadores."
   reloaded: "<green>Configuracoes recarregadas."
   not-implemented: "<yellow>Esse recurso ainda nao foi implementado."
+  usage: "<yellow>Uso: <white><usage></white>"
 
 errors:
   no-permission: "<red>Voce nao tem permissao para isso."
   player-not-found: "<red>Jogador <white><player></white> nao encontrado."
+  player-offline: "<red>Jogador <white><player></white> esta offline."
   clan-not-found: "<red>Cla com tag <white><tag></white> nao encontrado."
   already-in-clan: "<red>Voce ja esta em um cla."
+  target-already-in-clan: "<red><player> ja esta em um cla."
   not-in-clan: "<red>Voce nao esta em um cla."
+  target-not-in-clan: "<red><player> nao esta no seu cla."
   not-leader: "<red>Apenas o lider pode fazer isso."
   not-officer: "<red>Apenas lider ou oficial pode fazer isso."
+  self-action: "<red>Voce nao pode fazer isso consigo mesmo."
+  invalid-number: "<red>Valor numerico invalido."
+  full: "<red>O cla esta cheio (<max> membros)."
 
 clan:
   tag:
@@ -35,15 +42,59 @@ clan:
     accepted: "<green>Voce entrou no cla <white><tag></white>!"
     denied: "<gray>Convite recusado."
     expired: "<gray>Esse convite expirou."
+    none: "<red>Voce nao tem um convite desse cla."
   kick:
     success: "<green><player> foi expulso do cla."
+    notify: "<red>Voce foi expulso do seu cla."
   promote:
     success: "<green><player> foi promovido a oficial."
+    already: "<red><player> ja e oficial ou lider."
   demote:
     success: "<yellow><player> foi rebaixado a membro."
+    already: "<red><player> ja e membro."
   leave:
     success: "<gray>Voce saiu do cla."
     leader-must-transfer: "<red>Transfira a lideranca antes de sair (/clan transfer <player>)."
+  transfer:
+    success: "<green>Lideranca transferida para <white><player></white>."
+  motd:
+    set: "<green>MOTD atualizada."
+    cleared: "<gray>MOTD removida."
+    show: "<gold>MOTD:</gold> <white><motd>"
+  color:
+    set: "<green>Cor da tag definida para <white><color></white>."
+    invalid: "<red>Cor invalida. Use um nome (ex: red) ou hex (#ff0000)."
+  info:
+    header: "<gold>=== Cla <tag> (<name>) ==="
+    leader: "<gray>Lider: <white><leader></white>"
+    level: "<gray>Nivel: <white><level></white> (<xp> XP)"
+    members: "<gray>Membros (<count>): <white><list>"
+    kd: "<gray>K/D: <white><kills>/<deaths></white> (<ratio>)"
+    wins: "<gray>Vitorias Gladiador: <white><wins></white>"
+    motd: "<gray>MOTD: <white><motd>"
+  list:
+    header: "<gold>Clas ativos:"
+    line: "<gray>- <clan_color>[<tag>]</clan_color> <white><name></white> <gray>(<members> membros)"
+    empty: "<gray>Nenhum cla cadastrado."
+  top:
+    header: "<gold>Top 10 clas por <metric>:"
+    line: "<gray><pos>. <white>[<tag>]</white> - <value>"
+  ally:
+    proposed: "<green>Proposta de alianca enviada ao cla <white><tag></white>."
+    received: "<gold>Cla <white><tag></white> propos alianca. Lider use <green>/clan ally <tag></green> para aceitar."
+    success: "<green>Alianca com <white><tag></white> estabelecida!"
+    removed: "<gray>Alianca com <white><tag></white> desfeita."
+    self: "<red>Seu cla nao pode aliar consigo mesmo."
+    already: "<red>Voces ja sao aliados."
+  rival:
+    set: "<red>Cla <white><tag></white> declarado rival!"
+    removed: "<gray>Rivalidade com <white><tag></white> removida."
+    self: "<red>Seu cla nao pode rivalizar consigo mesmo."
+
+chat:
+  toggled-on: "<green>Modo de chat <white><mode></white> ativado."
+  toggled-off: "<gray>Modo de chat padrao."
+  no-ally: "<red>Seu cla nao tem aliados."
 
 duel:
   challenge:
@@ -52,8 +103,17 @@ duel:
     accepted: "<green>Desafio aceito!"
     denied: "<gray>Desafio recusado."
     expired: "<gray>Desafio expirado."
+    none: "<red>Voce nao tem desafios pendentes."
+    self: "<red>Voce nao pode desafiar a si mesmo."
   cooldown: "<red>Aguarde <time>s antes de desafiar esse jogador novamente."
   arena-not-set: "<red>Arena de /x1 nao configurada. Avise um admin."
+  countdown: "<yellow>O duelo comeca em <seconds>..."
+  start: "<gold>Lutem!"
+  win: "<green><player> venceu o duelo!"
+  bet:
+    insufficient: "<red>Voce nao tem <amount> para essa aposta."
+    too-low: "<red>Aposta minima: <min>."
+    too-high: "<red>Aposta maxima: <max>."
 
 gladiator:
   signup:
@@ -61,8 +121,20 @@ gladiator:
     closed: "<red>Inscricoes fechadas."
     joined: "<green>Cla <white><tag></white> inscrito no Gladiador."
     left: "<gray>Cla removido do Gladiador."
+    not-open: "<red>Inscricoes nao estao abertas."
+    already: "<red>Seu cla ja esta inscrito."
+    not-in: "<red>Seu cla nao esta inscrito."
+    not-enough: "<red>Seu cla precisa de pelo menos <min> membros."
   announce:
     pre: "<gold>Gladiador comeca em <time>!"
     start: "<gold>O Gladiador comecou! Que vencam os melhores."
     winner: "<gold>Vitoria do cla <white><tag></white> no Gladiador!"
+    no-clans: "<red>Nenhum cla inscrito. Evento cancelado."
   no-spawns: "<red>Nenhum spawn configurado. Use /gladiator setspawn <n>."
+  spawn-set: "<green>Spawn <n> configurado."
+  lobby-set: "<green>Lobby configurado."
+  return-set: "<green>Spawn de retorno configurado."
+  history:
+    header: "<gold>Historico recente do Gladiador:"
+    line: "<gray><week>: <white><winner>"
+    empty: "<gray>Nenhum evento registrado ainda."

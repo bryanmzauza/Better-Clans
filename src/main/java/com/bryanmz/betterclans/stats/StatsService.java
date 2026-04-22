@@ -2,10 +2,9 @@ package com.bryanmz.betterclans.stats;
 
 import com.bryanmz.betterclans.BetterClansPlugin;
 
-import java.util.UUID;
-
 /**
- * Agrega K/D, duelos e vitorias. Flush em batch na Fase 2.
+ * No momento, stats sao atualizadas direto no StatsListener via ClanManager.
+ * Essa classe reserva espaco para cache/batching futuro.
  */
 public final class StatsService {
 
@@ -15,15 +14,7 @@ public final class StatsService {
         this.plugin = plugin;
     }
 
-    public void recordKill(UUID killer, UUID victim) {
-        // TODO Fase 2
-    }
-
-    public void recordDuelWin(UUID winner, UUID loser) {
-        // TODO Fase 3
-    }
-
     public void flush() {
-        // TODO Fase 2
+        plugin.clans().flush();
     }
 }

@@ -1,9 +1,7 @@
 package com.bryanmz.betterclans.database;
 
 import com.bryanmz.betterclans.BetterClansPlugin;
-import com.bryanmz.betterclans.database.dao.ClanDAO;
-import com.bryanmz.betterclans.database.dao.MySQLClanDAO;
-import com.bryanmz.betterclans.database.dao.SQLiteClanDAO;
+import com.bryanmz.betterclans.database.dao.SqlClanDAO;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -16,17 +14,17 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
-/**
- * Orquestra HikariCP + migracoes + escolhe o DAO certo conforme config.
- */
 public final class DatabaseManager {
 
     private final BetterClansPlugin plugin;
     private HikariDataSource dataSource;
-    private ClanDAO clanDAO;
+    private SqlClanDAO dao;
     private Type type;
+    private Executor ioExecutor;
 
     public enum Type { MYSQL, SQLITE }
 
@@ -45,9 +43,8 @@ public final class DatabaseManager {
 
         runMigrations();
 
-        this.clanDAO = type == Type.MYSQL
-                ? new MySQLClanDAO(dataSource)
-                : new SQLiteClanDAO(dataSource);
+        this.ioExecutor = Executors.newVirtualThreadPerTaskExecutor();
+        this.dao = new SqlClanDAO(dataSource, ioExecutor);
     }
 
     public void shutdown() {
@@ -56,17 +53,11 @@ public final class DatabaseManager {
         }
     }
 
-    public DataSource dataSource() {
-        return dataSource;
-    }
-
-    public ClanDAO clans() {
-        return clanDAO;
-    }
-
-    public Type type() {
-        return type;
-    }
+    public DataSource dataSource() { return dataSource; }
+    public SqlClanDAO dao() { return dao; }
+    public SqlClanDAO clans() { return dao; }
+    public Type type() { return type; }
+    public Executor ioExecutor() { return ioExecutor; }
 
     private void runMigrations() {
         try (Connection conn = dataSource.getConnection()) {

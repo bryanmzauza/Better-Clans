@@ -11,46 +11,58 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
 
-/**
- * Agenda o match semanal do Gladiador (sab 20h America/Sao_Paulo por default).
- */
 public final class GladiatorScheduler {
 
     private final BetterClansPlugin plugin;
-    private BukkitTask task;
+    private BukkitTask signupTask;
+    private BukkitTask matchTask;
 
     public GladiatorScheduler(BetterClansPlugin plugin) {
         this.plugin = plugin;
     }
 
     public void start() {
-        ConfigurationSection schedule = plugin.getConfig().getConfigurationSection("gladiator.schedule");
-        if (schedule == null) return;
-        // Sinaliza apenas; tick fino de delay e reagendamento ficam para Fase 4.
-        long delayTicks = computeInitialDelayTicks(schedule);
-        this.task = plugin.getServer().getScheduler().runTaskLater(plugin, this::fire, delayTicks);
+        scheduleSignup();
+        scheduleMatch();
     }
 
     public void shutdown() {
-        if (task != null) task.cancel();
+        if (signupTask != null) signupTask.cancel();
+        if (matchTask != null) matchTask.cancel();
     }
 
-    private void fire() {
-        // TODO Fase 4: invocar start do GladiatorEvent
-        start(); // reagenda proxima semana
+    private void scheduleSignup() {
+        ConfigurationSection cfg = plugin.getConfig().getConfigurationSection("gladiator.signup-opens");
+        if (cfg == null) return;
+        long ticks = computeDelayTicks(cfg);
+        this.signupTask = plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            plugin.gladiator().openSignups();
+            scheduleSignup();
+        }, ticks);
     }
 
-    private long computeInitialDelayTicks(ConfigurationSection schedule) {
+    private void scheduleMatch() {
+        ConfigurationSection cfg = plugin.getConfig().getConfigurationSection("gladiator.schedule");
+        if (cfg == null) return;
+        long ticks = computeDelayTicks(cfg);
+        this.matchTask = plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            plugin.gladiator().closeSignups();
+            plugin.gladiator().startMatch();
+            scheduleMatch();
+        }, ticks);
+    }
+
+    private long computeDelayTicks(ConfigurationSection schedule) {
         DayOfWeek day = DayOfWeek.valueOf(schedule.getString("day-of-week", "SATURDAY"));
         int hour = schedule.getInt("hour", 20);
         int minute = schedule.getInt("minute", 0);
-        ZoneId zone = ZoneId.of(schedule.getString("timezone", "America/Sao_Paulo"));
+        ZoneId zone = ZoneId.of(plugin.getConfig().getString("gladiator.schedule.timezone", "America/Sao_Paulo"));
 
         ZonedDateTime now = ZonedDateTime.now(zone);
-        ZonedDateTime next = now.with(TemporalAdjusters.nextOrSame(day)).with(LocalTime.of(hour, minute));
+        ZonedDateTime next = now.with(TemporalAdjusters.nextOrSame(day)).with(LocalTime.of(hour, minute)).withSecond(0).withNano(0);
         if (!next.isAfter(now)) next = next.plusWeeks(1);
 
         long seconds = Duration.between(now, next).toSeconds();
-        return Math.max(20L, seconds * 20L); // ticks
+        return Math.max(20L, seconds * 20L);
     }
 }

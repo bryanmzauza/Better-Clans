@@ -59,9 +59,9 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         mergeServiceFiles()
+        // Apenas Hikari pode ser relocado com seguranca.
+        // Drivers JDBC (sqlite/mysql) usam JNI + reflection e DEVEM ficar no pacote original.
         relocate("com.zaxxer.hikari", "com.bryanmz.betterclans.libs.hikari")
-        relocate("org.sqlite", "com.bryanmz.betterclans.libs.sqlite")
-        relocate("com.mysql", "com.bryanmz.betterclans.libs.mysql")
     }
 
     assemble {
