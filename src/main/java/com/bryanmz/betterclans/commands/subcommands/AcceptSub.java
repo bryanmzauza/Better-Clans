@@ -25,6 +25,10 @@ public final class AcceptSub extends AbstractSub {
             sender.sendMessage(plugin.messages().get("errors.already-in-clan"));
             return;
         }
+        if (plugin.gladiator().isParticipant(p.getUniqueId())) {
+            sender.sendMessage(plugin.messages().get("errors.in-gladiator"));
+            return;
+        }
 
         if (!plugin.clans().invites().consume(p.getUniqueId(), clan.id())) {
             sender.sendMessage(plugin.messages().get("clan.invite.none"));

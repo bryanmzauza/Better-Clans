@@ -5,6 +5,7 @@ import com.bryanmz.betterclans.commands.AllyChatCommand;
 import com.bryanmz.betterclans.commands.ClanChatCommand;
 import com.bryanmz.betterclans.commands.ClanCommand;
 import com.bryanmz.betterclans.commands.DuelCommand;
+import com.bryanmz.betterclans.commands.DuelAdminCommand;
 import com.bryanmz.betterclans.commands.GladiatorCommand;
 import com.bryanmz.betterclans.database.DatabaseManager;
 import com.bryanmz.betterclans.duel.DuelManager;
@@ -107,13 +108,14 @@ public final class BetterClansPlugin extends JavaPlugin {
         bind("clanchat", new ClanChatCommand(this));
         bind("allychat", new AllyChatCommand(this));
         bind("x1", new DuelCommand(this));
+        bind("x1admin", new DuelAdminCommand(this));
         bind("gladiator", new GladiatorCommand(this));
 
-        // Tab completer do /clan
-        PluginCommand clanCmd = getCommand("clan");
-        if (clanCmd != null && clanCmd.getExecutor() instanceof ClanCommand cc) {
-            clanCmd.setTabCompleter(cc);
-        }
+        // Tab completers
+        setTabCompleter("clan");
+        setTabCompleter("x1");
+        setTabCompleter("x1admin");
+        setTabCompleter("gladiator");
 
         // Listeners
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
@@ -149,6 +151,14 @@ public final class BetterClansPlugin extends JavaPlugin {
             return;
         }
         cmd.setExecutor(executor);
+    }
+
+    private void setTabCompleter(String name) {
+        PluginCommand cmd = getCommand(name);
+        if (cmd == null) return;
+        if (cmd.getExecutor() instanceof org.bukkit.command.TabCompleter tc) {
+            cmd.setTabCompleter(tc);
+        }
     }
 
     // -------- getters ----------

@@ -90,9 +90,22 @@ public final class GladiatorCommand implements CommandExecutor, TabCompleter {
         plugin.database().dao().recentGladiatorWinners(10).thenAccept(lines -> {
             if (lines.isEmpty()) { sender.sendMessage(plugin.messages().get("gladiator.history.empty")); return; }
             sender.sendMessage(plugin.messages().get("gladiator.history.header"));
+            java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            java.time.ZoneId zone = java.time.ZoneId.of(plugin.getConfig().getString("gladiator.schedule.timezone", "America/Sao_Paulo"));
             for (String entry : lines) {
-                String[] parts = entry.split("\\|");
-                sender.sendMessage(Component.text("- semana " + parts[0] + ": " + parts[1]));
+                String[] parts = entry.split("\\|", 2);
+                long week;
+                try { week = Long.parseLong(parts[0]); } catch (NumberFormatException e) { continue; }
+                String winnerId = parts.length > 1 ? parts[1] : null;
+                String date = java.time.Instant.ofEpochMilli(week).atZone(zone).format(fmt);
+                String tag = "-";
+                if (winnerId != null && !winnerId.isBlank() && !winnerId.equals("null")) {
+                    try {
+                        java.util.UUID uuid = java.util.UUID.fromString(winnerId);
+                        tag = plugin.clans().getById(uuid).map(com.bryanmz.betterclans.clan.Clan::tag).orElse("?");
+                    } catch (IllegalArgumentException ignored) { tag = "?"; }
+                }
+                sender.sendMessage(plugin.messages().raw("gladiator.history.line", "week", date, "winner", tag));
             }
         });
     }

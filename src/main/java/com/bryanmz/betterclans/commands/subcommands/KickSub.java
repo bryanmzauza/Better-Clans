@@ -26,6 +26,10 @@ public final class KickSub extends AbstractSub {
         @SuppressWarnings("deprecation")
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
         if (target.getUniqueId().equals(p.getUniqueId())) { sender.sendMessage(plugin.messages().get("errors.self-action")); return; }
+        if (plugin.gladiator().isParticipant(target.getUniqueId())) {
+            sender.sendMessage(plugin.messages().get("errors.target-in-gladiator"));
+            return;
+        }
 
         ClanMember tm = plugin.clans().getMember(target.getUniqueId()).orElse(null);
         if (tm == null || !tm.clanId().equals(me.clanId())) {

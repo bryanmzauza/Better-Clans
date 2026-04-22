@@ -34,7 +34,7 @@ public final class DuelCommand implements CommandExecutor, TabCompleter {
         switch (head) {
             case "accept" -> plugin.duels().accept(p);
             case "deny", "denied" -> plugin.duels().deny(p);
-            case "stats" -> showStats(p);
+            case "stats" -> showStats(p, args.length >= 2 ? args[1] : null);
             default -> {
                 Player target = Bukkit.getPlayerExact(args[0]);
                 if (target == null) { sender.sendMessage(plugin.messages().get("errors.player-offline", "player", args[0])); return true; }
@@ -51,9 +51,21 @@ public final class DuelCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    private void showStats(Player p) {
-        plugin.database().dao().duelStats(p.getUniqueId()).thenAccept(stats -> {
-            p.sendMessage(Component.text("Duelos vencidos: " + stats[0] + " | perdidos: " + stats[1]));
+    private void showStats(Player requester, String targetName) {
+        java.util.UUID uuid;
+        String who;
+        if (targetName == null) {
+            uuid = requester.getUniqueId();
+            who = requester.getName();
+        } else {
+            @SuppressWarnings("deprecation")
+            var off = Bukkit.getOfflinePlayer(targetName);
+            if (off.getUniqueId() == null) { requester.sendMessage(plugin.messages().get("errors.player-offline", "player", targetName)); return; }
+            uuid = off.getUniqueId();
+            who = targetName;
+        }
+        plugin.database().dao().duelStats(uuid).thenAccept(stats -> {
+            requester.sendMessage(Component.text(who + " - vitorias: " + stats[0] + " | derrotas: " + stats[1]));
         });
     }
 
@@ -68,6 +80,14 @@ public final class DuelCommand implements CommandExecutor, TabCompleter {
             }
             for (var online : Bukkit.getOnlinePlayers()) {
                 if (sender instanceof Player self && self.getUniqueId().equals(online.getUniqueId())) continue;
+                if (online.getName().toLowerCase(Locale.ROOT).startsWith(prefix)) out.add(online.getName());
+            }
+            return out;
+        }
+        if (args.length == 2 && args[0].equalsIgnoreCase("stats")) {
+            String prefix = args[1].toLowerCase(Locale.ROOT);
+            List<String> out = new ArrayList<>();
+            for (var online : Bukkit.getOnlinePlayers()) {
                 if (online.getName().toLowerCase(Locale.ROOT).startsWith(prefix)) out.add(online.getName());
             }
             return out;

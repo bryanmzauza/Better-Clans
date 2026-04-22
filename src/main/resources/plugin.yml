@@ -37,6 +37,10 @@ commands:
     description: Desafia um jogador para duelo 1v1.
     usage: /x1 <player> [aposta]
     permission: betterclans.duel
+  x1admin:
+    description: Configuracao admin dos spawns do /x1.
+    usage: /x1admin setspawn <a|b>
+    permission: betterclans.admin.duel
   gladiator:
     description: Comandos do evento Gladiador semanal.
     usage: /gladiator help
@@ -81,6 +85,8 @@ permissions:
       betterclans.admin.setlevel: true
       betterclans.admin.setmax: true
       betterclans.admin.migrate: true
+      betterclans.admin.gladiator: true
+      betterclans.admin.duel: true
   betterclans.admin.reload:
     default: op
   betterclans.admin.delete:
@@ -90,4 +96,8 @@ permissions:
   betterclans.admin.setmax:
     default: op
   betterclans.admin.migrate:
+    default: op
+  betterclans.admin.gladiator:
+    default: op
+  betterclans.admin.duel:
     default: op

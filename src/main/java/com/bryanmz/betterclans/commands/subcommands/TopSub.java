@@ -25,6 +25,10 @@ public final class TopSub extends AbstractSub {
             case "kills" -> { cmp = Comparator.comparingInt(Clan::kills).reversed(); fmt = c -> String.valueOf(c.kills()); }
             case "wins", "gladiator" -> { cmp = Comparator.comparingInt(Clan::wins).reversed(); fmt = c -> String.valueOf(c.wins()); }
             case "kd" -> { cmp = Comparator.comparingDouble(Clan::kdRatio).reversed(); fmt = c -> String.format("%.2f", c.kdRatio()); }
+            case "members" -> {
+                cmp = Comparator.<Clan>comparingInt(c -> plugin.clans().membersOf(c.id()).size()).reversed();
+                fmt = c -> String.valueOf(plugin.clans().membersOf(c.id()).size());
+            }
             default -> { metric = "xp"; cmp = Comparator.comparingLong(Clan::xp).reversed(); fmt = c -> String.valueOf(c.xp()); }
         }
 
@@ -41,6 +45,6 @@ public final class TopSub extends AbstractSub {
 
     @Override
     public java.util.List<String> tabComplete(CommandSender sender, String[] args) {
-        return args.length == 1 ? completeLiteral(args[0], "xp", "kills", "wins", "kd") : java.util.Collections.emptyList();
+        return args.length == 1 ? completeLiteral(args[0], "xp", "kills", "wins", "kd", "members") : java.util.Collections.emptyList();
     }
 }

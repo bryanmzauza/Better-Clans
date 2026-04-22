@@ -21,6 +21,8 @@ errors:
   self-action: "<red>Voce nao pode fazer isso consigo mesmo."
   invalid-number: "<red>Valor numerico invalido."
   full: "<red>O cla esta cheio (<max> membros)."
+  in-gladiator: "<red>Voce nao pode fazer isso enquanto participa do Gladiador."
+  target-in-gladiator: "<red>Esse jogador esta no Gladiador e nao pode ser removido agora."
 
 clan:
   tag:
