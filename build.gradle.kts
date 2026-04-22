@@ -20,6 +20,7 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.opencollab.dev/main/") // Floodgate / Geyser
     maven("https://jitpack.io") // Vault
 }
 
@@ -37,6 +38,7 @@ dependencies {
     // Soft-depends
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
+    compileOnly("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
 }
 
 tasks {

@@ -44,6 +44,7 @@ public final class ClanCommand implements CommandExecutor, TabCompleter {
         register(new AllyChatSub(plugin));
         register(new MotdSub(plugin));
         register(new ColorSub(plugin));
+        register(new MenuSub(plugin));
         register(new AdminSub(plugin));
     }
 
@@ -57,7 +58,15 @@ public final class ClanCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args) {
-        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
+        if (args.length == 0) {
+            if (sender instanceof org.bukkit.entity.Player p) {
+                plugin.menus().openMain(p);
+            } else {
+                sendHelp(sender);
+            }
+            return true;
+        }
+        if (args[0].equalsIgnoreCase("help")) {
             sendHelp(sender);
             return true;
         }

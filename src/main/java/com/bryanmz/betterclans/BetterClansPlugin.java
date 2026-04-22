@@ -18,6 +18,8 @@ import com.bryanmz.betterclans.hooks.LuckPermsHook;
 import com.bryanmz.betterclans.hooks.NChatHook;
 import com.bryanmz.betterclans.hooks.PlaceholderAPIHook;
 import com.bryanmz.betterclans.hooks.VaultHook;
+import com.bryanmz.betterclans.menu.MenuListener;
+import com.bryanmz.betterclans.menu.MenuService;
 import com.bryanmz.betterclans.nametag.NametagManager;
 import com.bryanmz.betterclans.nametag.ProtocolLibAdapter;
 import com.bryanmz.betterclans.nametag.ScoreboardNametagProvider;
@@ -47,6 +49,7 @@ public final class BetterClansPlugin extends JavaPlugin {
     private VaultHook vault;
     private NChatHook nChat;
     private LuckPermsHook luckPerms;
+    private MenuService menus;
 
     @Override
     public void onEnable() {
@@ -121,6 +124,13 @@ public final class BetterClansPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         getServer().getPluginManager().registerEvents(new PvPListener(this), this);
         getServer().getPluginManager().registerEvents(new StatsListener(this), this);
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
+
+        // Menus (Java + Bedrock via Floodgate)
+        this.menus = new MenuService(this);
+        if (getServer().getPluginManager().getPlugin("floodgate") != null) {
+            getLogger().info("Floodgate detectado - menus Bedrock habilitados.");
+        }
 
         getLogger().info("BetterClans habilitado (v" + getPluginMeta().getVersion() + ").");
     }
@@ -177,4 +187,5 @@ public final class BetterClansPlugin extends JavaPlugin {
     public NametagManager nametag() { return nametag; }
     public VaultHook vault() { return vault; }
     public LuckPermsHook luckPerms() { return luckPerms; }
+    public MenuService menus() { return menus; }
 }

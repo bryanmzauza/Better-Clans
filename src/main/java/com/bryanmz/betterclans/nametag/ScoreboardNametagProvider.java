@@ -41,8 +41,10 @@ public final class ScoreboardNametagProvider implements NametagManager {
         Team team = sb.getTeam(teamName);
         if (team == null) team = sb.registerNewTeam(teamName);
         TextColor color = com.bryanmz.betterclans.util.ColorUtil.parse(clan.tagColor());
-        team.prefix(Component.text("[" + clan.tag() + "] ").color(color));
-        if (color instanceof NamedTextColor named) team.color(named);
+        // Prefix: apenas a tag colorida; espaco separador fica branco para o nome ficar branco.
+        team.prefix(Component.text("[" + clan.tag() + "]").color(color)
+                .append(Component.text(" ").color(NamedTextColor.WHITE)));
+        team.color(NamedTextColor.WHITE);
         team.addEntity(player);
 
         updateTablist(player, clan);
@@ -51,12 +53,12 @@ public final class ScoreboardNametagProvider implements NametagManager {
     private void updateTablist(Player player, Clan clan) {
         if (!plugin.getConfig().getBoolean("tablist.enabled", true)) return;
         if (clan == null) {
-            player.playerListName(Component.text(player.getName()));
+            player.playerListName(Component.text(player.getName(), NamedTextColor.WHITE));
             return;
         }
         TextColor color = com.bryanmz.betterclans.util.ColorUtil.parse(clan.tagColor());
-        Component line = Component.text("[" + clan.tag() + "] ").color(color)
-                .append(Component.text(player.getName()));
+        Component line = Component.text("[" + clan.tag() + "]").color(color)
+                .append(Component.text(" " + player.getName(), NamedTextColor.WHITE));
         player.playerListName(line);
     }
 
